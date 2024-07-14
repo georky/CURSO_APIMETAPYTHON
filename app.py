@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import http.client
@@ -42,7 +42,15 @@ def agregar_mensajes_log(texto):
     db.session.add(nuevo_registro)
     db.session.commit()
 
-#agregar_mensajes_log(json.dumps('test1'))
+def recibir_mensajes(req):
+   
+        req = request.get_json()
+       
+            #Guardar Log en la BD
+        agregar_mensajes_log(req)
+
+                
+        return jsonify({'message':'EVENT_RECEIVED'})
 
 if __name__=='__main__':
     app.run(host='0.0.0.0',port=80,debug=True)
